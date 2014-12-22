@@ -3,6 +3,7 @@ package Utils;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author nakim
  */
-public class Request
+public class Request implements Serializable
 {
     //<editor-fold defaultstate="collapsed" desc="Private variables">
     private String command;
@@ -75,12 +76,6 @@ public class Request
     {
         return this.command;
     }
-
-    /**
-     * Donne l'argument a l'index donné
-     * @param i     Index   
-     * @return      Argument voulu
-     */
     
     /**
      * Get the request argument at specified index
