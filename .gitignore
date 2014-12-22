@@ -1,3 +1,4 @@
+*.DS_Store
 /Utils/nbproject/private/
 /Utils/dist/
 /Utils/build/
