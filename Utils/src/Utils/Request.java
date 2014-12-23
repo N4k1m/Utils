@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public class Request implements Serializable
 {
     //<editor-fold defaultstate="collapsed" desc="Static variables">
-    private static final String SOCK_ERROR;
-    private static final String NO_COMMAND;
+    public static final String SOCK_ERROR;
+    public static final String NO_COMMAND;
 
     static
     {
