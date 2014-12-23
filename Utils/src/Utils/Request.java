@@ -13,11 +13,22 @@ import java.util.ArrayList;
  */
 public class Request implements Serializable
 {
+    //<editor-fold defaultstate="collapsed" desc="Static variables">
+    private static final String SOCK_ERROR;
+    private static final String NO_COMMAND;
+
+    static
+    {
+        SOCK_ERROR = "SOCK_ERROR";
+        NO_COMMAND = "NO_COMMAND";
+    }
+    //</editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="Private variables">
     private String command;
     private ArrayList<byte[]> args;
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Constructors">
     /**
      * Default Request constructor
@@ -26,7 +37,7 @@ public class Request implements Serializable
     {
         this(null);
     }
-    
+
     /**
      * Request constructor
      * @param command the request command
@@ -37,17 +48,17 @@ public class Request implements Serializable
         this.command = command;
     }
     //</editor-fold>
-    
-    //<editor-fold defaultstate="collapsed" desc="Setters">    
+
+    //<editor-fold defaultstate="collapsed" desc="Setters">
     /**
      * Change Request command
      * @param command the new command
      */
     public final void setCommand(String command)
-    {   
+    {
         this.command = command;
     }
-    
+
     /**
      * Add a new argument as string
      * @param argument the new string argument
@@ -56,18 +67,18 @@ public class Request implements Serializable
     {
         this.addArg(argument.getBytes());
     }
-    
+
     /**
      * Add a new argument as byte array
      * @param argument the new byte array argument
      */
     public void addArg(byte[] argument)
-    {   
+    {
         this.args.add(argument);
     }
     //</editor-fold>
-    
-    //<editor-fold defaultstate="collapsed" desc="Getters">    
+
+    //<editor-fold defaultstate="collapsed" desc="Getters">
     /**
      * Get the request command
      * @return the request command
@@ -76,7 +87,7 @@ public class Request implements Serializable
     {
         return this.command;
     }
-    
+
     /**
      * Get the request argument at specified index
      * @param index the argument's index
@@ -86,10 +97,10 @@ public class Request implements Serializable
     {
         if(this.args.size() <= index)
             throw new IllegalAccessError("Invalid index");
-        
+
         return this.args.get(index);
     }
-    
+
     /**
      * Get the request argument at specified index
      * @param index the argument's index
@@ -105,10 +116,10 @@ public class Request implements Serializable
      * @return all arguments as an array if byte array
      */
     public ArrayList<byte[]> getArgs()
-    {        
+    {
         return this.args;
     }
-    
+
     /**
      * Get the number of request arguments
      * @return the number of arguments
@@ -118,8 +129,8 @@ public class Request implements Serializable
         return this.args.size();
     }
     //</editor-fold>
-    
-    //<editor-fold defaultstate="collapsed" desc="Utils">    
+
+    //<editor-fold defaultstate="collapsed" desc="Utils">
     /**
      * Send the requet
      * @param sock the socket
@@ -129,15 +140,15 @@ public class Request implements Serializable
     {
         if(sock == null)
             return false;
-        
+
         ObjectOutputStream out = null;
         try
         {
             out = new ObjectOutputStream(sock.getOutputStream());
-        
+
             out.writeObject(this);
             out.flush();
-            
+
             return true;
         }
         catch (IOException ex)
@@ -146,7 +157,7 @@ public class Request implements Serializable
             return false;
         }
     }
-    
+
     /**
      * Receive a requet
      * @param sock the socket
@@ -155,8 +166,8 @@ public class Request implements Serializable
     public static Request recv(Socket sock)
     {
         if(sock == null)
-            return new Request("SOCK_NULL");
-        
+            return new Request(Request.SOCK_ERROR);
+
         try
         {
             ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
@@ -167,7 +178,7 @@ public class Request implements Serializable
         catch (IOException | ClassNotFoundException ex)
         {
             //System.err.println("Receipt error : " + ex);
-            return new Request("NO_COMMAND");
+            return new Request(Request.NO_COMMAND);
         }
     }
 
@@ -180,9 +191,9 @@ public class Request implements Serializable
     {
         if(this.send(sock))
             return recv(sock);
-        return new Request("NO_COMMAND");
+        return new Request(Request.NO_COMMAND);
     }
-    
+
     /**
      * Send a new request with no argument
      * @param command the request command
@@ -193,7 +204,7 @@ public class Request implements Serializable
         Request request = new Request(command);
         request.send(sock);
     }
-    
+
     /**
      * Send a new request with one argument as string
      * @param command the request command
@@ -206,7 +217,7 @@ public class Request implements Serializable
         request.addArg(argument);
         request.send(sock);
     }
-    
+
     /**
      * Remove all arguments
      */
@@ -214,7 +225,7 @@ public class Request implements Serializable
     {
         this.args.clear();
     }
-    
+
     /**
      * Remove all arguments and reset command
      */
