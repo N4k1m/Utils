@@ -88,6 +88,11 @@ public class Request implements Serializable
         return this.command;
     }
 
+    public boolean is(String command)
+    {
+        return this.command.compareTo(command) == 0;
+    }
+
     /**
      * Get the request argument at specified index
      * @param index the argument's index
