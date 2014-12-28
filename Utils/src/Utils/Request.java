@@ -152,7 +152,7 @@ public class Request implements Serializable
         }
         catch (IOException ex)
         {
-            System.err.println(this.getCommand() + " sending error : " + ex);
+            //System.err.println(this.getCommand() + " sending error : " + ex);
             return false;
         }
     }
