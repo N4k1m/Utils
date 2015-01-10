@@ -198,10 +198,10 @@ public class Request implements Serializable
      * @param command the request command
      * @param sock the socket
      */
-    public static void quickSend(String command, Socket sock)
+    public static boolean quickSend(String command, Socket sock)
     {
         Request request = new Request(command);
-        request.send(sock);
+        return request.send(sock);
     }
 
     /**
@@ -210,11 +210,11 @@ public class Request implements Serializable
      * @param argument the request argument
      * @param sock the socket
      */
-    public static void quickSend(String command, String argument, Socket sock)
+    public static boolean quickSend(String command, String argument, Socket sock)
     {
         Request request = new Request(command);
         request.addArg(argument);
-        request.send(sock);
+        return request.send(sock);
     }
 
     /**
